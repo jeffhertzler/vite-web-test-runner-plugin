@@ -1,6 +1,7 @@
 const vite = require("vite");
 
 const WDS_FILE_PREFIX = "__web-dev-server__";
+const WTR_FILE_PREFIX = "__web-test-runner__";
 
 module.exports = function () {
   let server;
@@ -14,7 +15,7 @@ module.exports = function () {
         resolve: {
           alias: [
             {
-              find: new RegExp(`\/(${WDS_FILE_PREFIX}.*)`),
+              find: new RegExp(`\/(${WDS_FILE_PREFIX}|${WTR_FILE_PREFIX}.*)`),
               replacement: `http://${config.hostname}:${config.port}/$1`,
             },
           ],
