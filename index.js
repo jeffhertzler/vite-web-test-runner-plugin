@@ -12,6 +12,7 @@ module.exports = function () {
     async serverStart({ app, config }) {
       viteServer = await vite.createServer({
         clearScreen: false,
+        logLevel: 'error',
         resolve: {
           // if vite sees an import for a wtr generated path, fetch the path from wtr
           alias: [
