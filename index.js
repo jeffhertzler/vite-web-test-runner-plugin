@@ -1,18 +1,24 @@
 const vite = require("vite");
+const fetch = require("node-fetch");
 
 const WDS_FILE_PREFIX = "__web-dev-server__";
 const WTR_FILE_PREFIX = "__web-test-runner__";
 
-module.exports = function () {
+/**
+ * @param {{ skipVite?: (url: string) => boolean }} opts
+ */
+module.exports = function (opts) {
+  /** @type { import('vite').ViteDevServer } */
   let viteServer;
 
-  return {
+  /** @type {import('@web/test-runner').TestRunnerPlugin } */
+  const plugin = {
     name: "vite-plugin",
 
     async serverStart({ app, config }) {
       viteServer = await vite.createServer({
         clearScreen: false,
-        logLevel: 'error',
+        logLevel: "error",
         resolve: {
           // if vite sees an import for a wtr generated path, fetch the path from wtr
           alias: [
@@ -27,13 +33,20 @@ module.exports = function () {
 
       const port = viteServer.config.server.port;
       const protocol = viteServer.config.server.https ? "https" : "http";
-      app.use((ctx, next) => {
-        const { path, querystring } = ctx;
-        // redirect all requests except those for wtr generated files to the vite server
-        const querySep = querystring?.length ? "?" : "";
+      app.use(async (ctx, next) => {
+        const { originalUrl, path, querystring } = ctx;
+
+        if (typeof opts.skip === "function") {
+          if (opts.skipVite(originalUrl)) return next();
+        }
+
         const viteUrl = `${protocol}://localhost:${port}${path}${querySep}${querystring}`;
-        ctx.redirect(viteUrl);
-        next();
+
+        const resp = await fetch(viteUrl);
+        const headers = Object.fromEntries(resp.headers.entries());
+
+        ctx.response.body = resp.body;
+        ctx.response.set(headers);
       });
     },
 
@@ -41,4 +54,5 @@ module.exports = function () {
       return viteServer.close();
     },
   };
+  return plugin;
 };
