@@ -1,5 +1,5 @@
 const vite = require("vite");
-const fetch = require("node-fetch");
+const fetch = require("cross-fetch");
 
 const WDS_FILE_PREFIX = "__web-dev-server__";
 const WTR_FILE_PREFIX = "__web-test-runner__";
