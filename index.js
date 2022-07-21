@@ -36,7 +36,7 @@ module.exports = function (opts) {
       app.use(async (ctx, next) => {
         const { originalUrl, path, querystring } = ctx;
 
-        if (typeof opts.skip === "function") {
+        if (typeof opts.skipVite === "function") {
           if (opts.skipVite(originalUrl)) return next();
         }
 
