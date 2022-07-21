@@ -35,6 +35,7 @@ module.exports = function (opts) {
       const protocol = viteServer.config.server.https ? "https" : "http";
       app.use(async (ctx, next) => {
         const { originalUrl, path, querystring } = ctx;
+        const querySep = querystring?.length ? "?" : "";
 
         if (typeof opts.skipVite === "function") {
           if (opts.skipVite(originalUrl)) return next();
