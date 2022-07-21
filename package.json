@@ -2,6 +2,7 @@
   "name": "vite-web-test-runner-plugin",
   "version": "0.0.0-semantic-release",
   "main": "index.js",
+  "types": "index.d.ts",
   "license": "MIT",
   "scripts": {
     "format": "prettier --check .",
@@ -28,6 +29,7 @@
     "vite": "2.* || 3.*"
   },
   "files": [
+    "index.d.ts",
     "index.js",
     "README.md"
   ],

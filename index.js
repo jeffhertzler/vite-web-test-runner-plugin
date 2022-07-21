@@ -7,7 +7,7 @@ const WTR_FILE_PREFIX = "__web-test-runner__";
 /**
  * @param {{ skipVite?: (url: string) => boolean }} opts
  */
-module.exports = function (opts) {
+module.exports = async (opts = {}) => {
   /** @type { import('vite').ViteDevServer } */
   let viteServer;
 
