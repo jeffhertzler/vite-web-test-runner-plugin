@@ -9,7 +9,7 @@
     "format:fix": "prettier --write .",
     "lint": "eslint --ext .js .",
     "lint:fix": "eslint --ext .js --fix .",
-    "prepare": "is-ci || husky install",
+    "xprepare": "is-ci || husky install",
     "semantic-release": "semantic-release"
   },
   "devDependencies": {
